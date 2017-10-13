@@ -1,0 +1,243 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <base href="<%=basePath%>">
+    
+    <title>alldept.jsp</title>
+    
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+
+  <link rel="stylesheet" href="<%=basePath%>js/easyui/themes/icon.css" type="text/css"></link>
+  <link rel="stylesheet" href="<%=basePath%>js/easyui/themes/bootstrap/easyui.css" type="text/css"></link>
+  <script type="text/javascript" src="<%=basePath%>js/easyui/jquery-1.8.0.min.js"></script>
+  <script type="text/javascript" src="<%=basePath%>js/easyui/jquery.easyui.min.js"></script>
+   <script type="text/javascript">
+      $(function(){
+           $("#ta").datagrid({
+               fitColumns:true,
+               url:"dept/alldept",
+               columns:[[
+                     
+                      {field:"name",title:"组名"},
+                      {field:"pname",title:"上级部门"},
+                      {field:"tel",title:"部门电话"},
+                      {field:"tname",title:"类型"},
+                      {field:"op",title:"操作",formatter:function(v,data,index){
+                           var ref="<a href='javascript:selectDept("+data.did+")'>详细</a>&nbsp;&nbsp;"
+                               ref+="<a href='javascript:toupdate("+data.did+")'>修改</a>&nbsp;&nbsp;"
+                               ref+="<a href='javascript:deleteDept("+data.did+")'>删除</a>"
+                                   return ref;
+                          }}
+                        ]],
+                 pagination:true,
+                 toolbar:"#cx"
+              
+               
+
+               });
+
+              $("[name='pdid']").combotree({
+				url:"dept/qalldept"
+			});
+               
+
+               $("[name='tid']").combobox({
+                   url:"dept/queryAllBase1",
+                   valueField:"bid",
+                   textField:"name"
+                   });
+                   
+                $("[name='bid']").combobox({
+                   url:"dept/queryAllBase2",
+                   valueField:"bid",
+                   textField:"name"
+                   });
+               
+               $("#dv").dialog({
+                   title:"增改部门信息",
+                   width:"400",
+                   height:"300", 
+                   closed:true,//默认隐藏弹出框
+                   onClose:function(){
+                         $("#mianform").form("clear");//调用表单控件清空表单数据
+                                },
+                   buttons:[
+   					{text:"保存",handler:adddept}
+   				]})
+         
+             //详细信息弹出框
+              $("#xx").dialog({
+                   title:"部门详细信息",
+                   width:"400",
+                   height:"300", 
+                   closed:true,//默认隐藏弹出框
+                   buttons:[
+   					{text:"关闭",handler:function(){
+   					  $("#xx").dialog("close");
+   					
+   					}}
+   				]})
+        
+        
+    })
+    
+    function adddept(){
+    	  var url="dept/adddept";
+    	   		var did= $("[name='did']").val();
+    	   		if(did!=null&&did>0){
+    	   			url="dept/updatedept";
+    	   		}
+    	   		
+    	       $("#mianform").form("submit",{
+    	         url:url,
+    	         success:function(){
+    	         $("#dv").dialog("close");//关闭新增窗口
+    	         $("#ta").datagrid("reload");//刷新页面
+    	         }
+    	       })
+    	      
+    }
+
+      function deleteDept(did){
+		$.post("dept/deleteDept", {"did":did}, function(d) {
+		    alert(d);
+			$("#ta").datagrid("reload");
+			
+		});
+
+	}
+
+	//显示详细信息
+	function selectDept(did) {
+		$.post("dept/selectDept", {
+			"did" : did
+		}, function(data) {
+			$("#xx").dialog("open");
+			var name = $("#name").text(data.name);
+			var name = $("#pname").text(data.pname);
+			var name = $("#tname").text(data.tname);
+			var name = $("#bname").text(data.bname);
+			var name = $("#ress").text(data.ress);
+			var name = $("#tel").text(data.tel);
+			var name = $("#tact").text(data.tact);
+			var name = $("#mob").text(data.mob);
+
+		})
+	}
+
+	function toupdate(did) {
+		$.post("dept/toupdate", {
+			"did" : did
+		}, function(data) {
+			$("#dv").dialog("open");
+			var did = $("[name='did']").val(data.did);
+			var name = $("[name='name']").val(data.name);
+			$("#pdid").combotree("setValue", data.pdid);
+			$("#tid").combobox("setValue", data.tid);
+			$("#bid").combobox("setValue", data.bid);
+			var ress = $("[name='ress']").val(data.ress);
+			var tel = $("[name='tel']").val(data.tel);
+			var tact = $("[name='tact']").val(data.tact);
+			var mob = $("[name='mob']").val(data.mob);
+
+		})
+
+	}
+
+	function querydept(did) {
+		$.post("dept/alldept", {
+			"did" : did
+		}, function() {
+			$("#dv").dialog("open");
+			$("#ta").datagrid("reload");
+		})
+	}
+
+	function dk() {
+		$("#dv").dialog("open");
+	}
+
+	function doquery() {
+		var v_name = $("[name='name']").val();
+		var v_pdid = $("[name='pdid']").val();
+		$("#ta").datagrid( {
+			url : "dept/alldept",
+			queryParams : {
+				name : v_name,
+				pdid : v_pdid
+			}
+
+		})
+	}
+</script>
+  
+  
+  
+  </head>
+  
+  <body>
+  <div id="cx">
+     组名：<input type="text" name="name">
+   所属组：<input type="text" name="pdid"/>
+    <a href="javascript:doquery()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a>
+     <a href="javascript:dk()" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>
+  </div>
+    <table id="ta"></table>
+    <div id="dv">
+      <form id="mianform" method="post">
+      <input type="hidden" name="did">
+         组名&nbsp;&nbsp;:<input type="text" name="name"><br>
+       上级组&nbsp;:<input type="text" id="pdid" name="pdid" value="--请选择--"><br>
+        部门类别:<input type="text" id="tid" name="tid" value="--请选择--"><br>
+        所属区域:<input type="text" id="bid" name="bid" value="--请选择--"><br>
+       地址&nbsp;&nbsp;:<input type="text" name="ress"><br>
+         电话&nbsp;&nbsp;:<input type="text" name="tel"><br>
+         联系人&nbsp;:<input type="text" name="tact"><br>
+         联系人电话:<input type="text" name="mob"><br>
+      </form>
+    </div>
+    
+     <div id="xx" >
+     <table>
+     <tr>
+     <td>组名:</td>
+     <td><span id="name"></span></td>
+     </tr>
+     <tr>
+     <td> 上级组:</td>
+     <td><span id="pname"></span></td>
+     </tr>
+     <tr>
+     <td>部门类别:</td>
+     <td><span id="tname"></span></td>
+     </tr>
+     <tr>
+     <td> 地址:</td>
+     <td><span id="tel"></span></span></td>
+     </tr>
+      <tr>
+     <td> 联系人:</td>
+     <td><span id="tact"></span></td>
+     </tr>
+      <tr>
+     <td> 联系人电话:</td>
+     <td><span id="mob"></span></td>
+     </tr>
+         </table>
+    </div>
+    
+  </body> 
+</html>

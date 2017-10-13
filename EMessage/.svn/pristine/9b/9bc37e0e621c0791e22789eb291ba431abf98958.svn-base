@@ -1,0 +1,98 @@
+package com.tsinghua.esco.xtgl.xxgl.controller;
+
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.tsinghua.esco.base.vo.DeptTree;
+import com.tsinghua.esco.base.vo.VAccsInfo;
+import com.tsinghua.esco.base.vo.VDeptInfo;
+import com.tsinghua.esco.base.vo.VEduMessageInfo;
+import com.tsinghua.esco.base.vo.VEduStudentInfo;
+import com.tsinghua.esco.base.vo.VEduTeachersInfo;
+import com.tsinghua.esco.xtgl.bmgl.dao.IDempDao;
+import com.tsinghua.esco.xtgl.xsgl.dao.IStudentDao;
+import com.tsinghua.esco.xtgl.xxgl.dao.IMessageDao;
+import com.tsinghua.esco.xtgl.xxgl.dao.JpushClientUtil;
+
+@Controller
+@RequestMapping("/msg")
+public class EduMessageHandler {
+	
+
+	@Autowired
+	private IMessageDao msgdao;
+	
+	@RequestMapping("/queryAll")
+	@ResponseBody
+	public Object queryAll(VEduMessageInfo msg){
+		List list=msgdao.queryAll(msg);
+		msg.setPage(null);
+		List list2=msgdao.queryAll(msg);
+		
+		Map map=new HashMap();
+		map.put("total", list2.size());
+		map.put("rows", list);
+		return map;
+	}
+	@RequestMapping("/saveAdd")
+	@ResponseBody
+	public String saveAdd(VEduMessageInfo msg,HttpServletRequest req){
+		VEduTeachersInfo acc=(VEduTeachersInfo)req.getSession().getAttribute("acc");
+		msg.setPush_user(acc.getId().toString());
+		System.out.println(acc.getId()+"**********************");
+		msgdao.saveAdd(msg);
+		return "success";
+	}
+	
+	@RequestMapping("/saveupdate")
+	@ResponseBody
+	public String saveUpdate(VEduMessageInfo msg){
+		msgdao.saveUpdate(msg);
+		return "success";
+	}
+	
+	
+	@RequestMapping("/dodelete")
+	@ResponseBody
+	public String dodelete(Integer id){
+		msgdao.dodelete(id);
+		return "success";
+	}
+	
+	@RequestMapping("/toupdate")
+	@ResponseBody
+	public Object toupdate(Integer id){
+		VEduMessageInfo msg= msgdao.toupdate(id);
+		return msg;
+		
+	}
+	@RequestMapping("/dopush")
+	@ResponseBody
+	public void dopush(Integer id){
+		VEduMessageInfo message = msgdao.dopush(id);
+		 if(JpushClientUtil.sendToAllAndroid("消息",message.getPush_title(),message.getPush_content(),"")==1){
+	            System.out.println("success");
+	        }	
+	}
+	
+	
+	
+	public IMessageDao getStudao() {
+		return msgdao;
+	}
+
+	public void setStudao(IMessageDao msgdao) {
+		this.msgdao = msgdao;
+	}
+
+}

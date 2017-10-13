@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+     "-//mybatis.org//DTD mapper 3.0//EN"
+     "http:mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+     <mapper namespace="com.tsinghua.esco.xtgl.jsgl.mapper.EduTeacherMapper">
+     
+        
+         <select id="queryAll" parameterType="com.tsinghua.esco.base.vo.VEduTeachersInfo" resultType="com.tsinghua.esco.base.vo.VEduTeachersInfo">
+           select 	t.*,o.org_name oname,r.role_name rname
+			from 
+			edu_teachers t,edu_org o ,edu_role r 
+			where t.org_id = o.id
+			and t.rid = r.id
+		  <if test="page!=null and page!=0">
+				limit #{startnum} ,#{rows}
+	  	  </if>
+        </select>
+        
+        <select id="toupdate" parameterType="int" resultType="com.tsinghua.esco.base.vo.VEduTeachersInfo">
+            select 	t.*,o.org_name oname,r.role_name rname
+			from 
+			edu_teachers t,edu_org o ,edu_role r
+			where t.org_id = o.id
+			and t.rid = r.id
+			and  t.id= #{value}
+        </select>
+     
+     	<insert id="saveAdd"  parameterType="com.tsinghua.esco.base.vo.VEduTeachersInfo">
+     	
+	         insert into edu_teachers 
+			(emp_no, name, password, sex, birthday, degree, position, job, is_employee, phone_number, email, org_id, rid)
+			values
+			(#{emp_no},
+			#{name},#{password},
+			#{sex},#{birthday},
+			#{degree},#{position},
+			#{job},#{is_employee},
+			#{phone_number},#{email},#{org_id},#{rid}
+			)
+        </insert>
+        
+         <update id="saveUpdate" parameterType="com.tsinghua.esco.base.vo.VEduTeachersInfo">
+	           update edu_teachers 
+				set
+				emp_no = #{emp_no},
+				name = #{name},
+				password = #{password},
+				sex = #{sex},
+				birthday = #{birthday},
+				degree = #{degree},
+				position = #{position},
+				job = #{job},
+				is_employee = #{is_employee},
+				phone_number = #{phone_number},
+				email = #{email},
+				org_id = #{org_id},
+				rid = #{rid}
+				where
+				id = #{id} 
+        </update>
+        
+         <delete id="dodelete" parameterType="int">
+            delete from edu_teachers where id=#{value}
+        </delete>
+     </mapper>
+

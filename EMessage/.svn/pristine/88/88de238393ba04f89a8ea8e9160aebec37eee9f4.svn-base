@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+     "-//mybatis.org//DTD mapper 3.0//EN"
+     "http:mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+     <mapper namespace="com.tsinghua.esco.xtgl.xxgl.mapper.EduMessageMapper">
+     
+        
+         <select id="queryAll" parameterType="com.tsinghua.esco.base.vo.VEduMessageInfo" resultType="com.tsinghua.esco.base.vo.VEduMessageInfo">
+            SELECT me.*,te.`name` 'user',org.org_name 'to' FROM edu_message_push me,edu_teachers te,edu_org org,edu_role role
+WHERE me.push_user=te.id and me.org_id=org.id and me.role_id=role.id
+		  <if test="page!=null and page!=0">
+				limit #{startnum} ,#{rows}
+	  	  </if>
+        </select>
+        <select id="toupdate" parameterType="int" resultType="com.tsinghua.esco.base.vo.VEduMessageInfo">
+           select s.*,t.name tname,o.org_name oname from edu_student s,edu_teachers t,edu_org o 
+			where s.org_id = o.id
+			and s.teacher_id = t.id
+			where s.id= #{value}
+        </select>
+     
+     	<insert id="saveAdd"  useGeneratedKeys="true" keyProperty="id"   parameterType="com.tsinghua.esco.base.vo.VEduMessageInfo">     
+	          insert into edu_message_push 
+			(push_date, push_title, push_content, push_to, attache_file,attache_suffix, is_feedback, push_user, push_status,role_id,org_id)
+			values
+			( #{push_date}, #{push_title}, 
+			#{push_content}, #{push_to}, #{attache_file}, #{attache_suffix}, 
+			#{is_feedback}, #{push_user}, 0,#{role_id},#{org_id})
+        </insert>
+           <update id="updateFiles" parameterType="com.tsinghua.esco.base.vo.VEduFile">
+	            update edu_file
+				set msg_id=#{msg_id} where fid =#{fid}
+        </update>
+        <insert id="saveAddRecord"  parameterType="com.tsinghua.esco.base.vo.VEduMessageInfo">     
+	          insert into edu_push_record(msg_id, org_id, role_id, push_status, update_date)
+			values
+			(#{id}, #{org_id}, 
+			#{role_id},0, #{push_date})
+        </insert>
+     
+         <update id="saveUpdate" parameterType="com.tsinghua.esco.base.vo.VEduMessageInfo">
+	            update edu_student 
+				set
+				id =#{id},
+				stu_no =#{stu_no},
+				name =#{name},
+				password =#{password},
+				sex =#{sex},
+				birthday =#{birthday},
+				degree =#{degree},
+				phone_number =#{phone_number},
+				email =#{email},
+				org_id =#{org_id},
+				teacher_id =#{teacher_id}
+				where
+				id =#{id} 
+        </update>
+        
+         <delete id="dodelete" parameterType="int">
+            delete from edu_message_push where id=#{value}
+        </delete>
+        <select id="dopush" parameterType="int"  resultType="com.tsinghua.esco.base.vo.VEduMessageInfo">
+            select * from edu_message_push where id=#{value}
+        </select>
+        
+        <select id="queryAllByPushuser" parameterType="String" resultType="com.tsinghua.esco.base.vo.VEduMessageInfo">
+           SELECT me.*,te.`name` 'user',te1.`name` 'to' FROM edu_message_push me ,edu_teachers te,edu_teachers te1 where me.push_user=te.id and me.push_to=te1.id and me.push_to=#{value}
+		</select>
+		
+		<select id="queryFilelistByMsgid" parameterType="String" resultType="com.tsinghua.esco.base.vo.VEduFile">
+           select * from edu_file where msg_id=#{value}
+		</select>
+		
+		<insert id="dofeed" useGeneratedKeys="true" keyProperty="id"   parameterType="com.tsinghua.esco.base.vo.VEduFeedback">
+			insert into edu_message_feedback(push_id,teach_id,stu_id,fd_date,fd_content,fd_attache_path,fd_attache_suffix) 
+			values(#{push_id},#{teach_id},#{stu_id},#{fd_date},#{fd_content},#{fd_attache_path},#{fd_attache_suffix})
+		</insert>
+     </mapper>
+

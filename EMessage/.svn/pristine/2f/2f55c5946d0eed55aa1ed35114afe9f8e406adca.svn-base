@@ -1,0 +1,32 @@
+[
+	{
+		"id":5,
+		"text":"系统管理",
+		"iconCls":"icon-system",
+		"children":[{
+				"text":"学生管理",
+				"iconCls":"icon-group-node",
+				"attributes":{"url":"/jsp/xtgl/xsgl/allstu.jsp"}
+			},{
+				"text":"组织管理",
+				"iconCls":"icon-contract",
+				"attributes":{"url":"/jsp/xtgl/bmgl/alldept.jsp"}
+			},{
+				"text":"教师管理",
+				"iconCls":"icon-user",
+				"attributes":{"url":"/jsp/xtgl/lsgl/allteacher.jsp"}
+			},{
+				"text":"角色管理",
+				"iconCls":"icon-award_star_silver",
+				"attributes":{"url":"/jsp/xtgl/jsgl/qxgl.jsp"}
+			},{
+				"text":"消息管理",
+				"iconCls":"icon-f_7",
+				"attributes":{"url":"jsp/xtgl/xxgl/allmessage.jsp"}
+			},{
+				"text":"附件上传",
+				"iconCls":"icon-f_7",
+				"attributes":{"url":"jsp/index/fileupload.jsp"}
+			}]
+	}
+]

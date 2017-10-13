@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+     "-//mybatis.org//DTD mapper 3.0//EN"
+     "http:mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+     <mapper namespace="com.tsinghua.esco.remote.interfaces.mapper.EduRemoteMapper">
+     
+     	<select id="checkStudentLogin" parameterType="com.tsinghua.esco.base.vo.VEduStudentInfo" resultType="com.tsinghua.esco.base.vo.VEduStudentInfo">
+           select s.*,t.name tname,o.org_name oname from edu_student s,edu_teachers t,edu_org o 
+			where s.org_id = o.id
+			and s.teacher_id = t.id
+			and s.stu_no = #{stu_no}
+			and s.password = #{password}
+		
+        </select>
+        
+         <select id="checkTeacherLogin" parameterType="com.tsinghua.esco.base.vo.VEduTeachersInfo" resultType="com.tsinghua.esco.base.vo.VEduTeachersInfo">
+            select 	t.*,o.org_name oname,r.role_name rname
+			from 
+			edu_teachers t,edu_org o ,edu_role r 
+			where t.org_id = o.id
+			and t.rid = r.id
+			and t.emp_no=#{emp_no}
+			and t.password=#{password}
+        </select>
+        
+     </mapper>
+

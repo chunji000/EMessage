@@ -1,0 +1,33 @@
+package com.tsinghua.esco.xtgl.bmgl.dao;
+
+import java.util.List;
+
+import com.tsinghua.esco.base.vo.VAccsInfo;
+import com.tsinghua.esco.base.vo.VDeptInfo;
+
+
+
+public interface IDempDao {
+
+	public List queryAllDept(VDeptInfo dept);
+	
+	public List queryDept(Integer pdid);
+	
+	public VDeptInfo selecDept(Integer did);
+	
+	public List queryAllBase(Integer id);
+
+	public void addDept(VDeptInfo dept);
+
+	public void deleteDept(Integer did);
+
+	public VDeptInfo toupdate(Integer did);
+
+	public void updateDept(VDeptInfo dept);
+
+	public VAccsInfo findAccs(Integer did);
+	
+	
+	
+}
+

@@ -1,0 +1,37 @@
+package com.tsinghua.esco.xtgl.qxgl.dao;
+
+import java.util.List;
+
+import com.tsinghua.esco.base.vo.VAccsInfo;
+import com.tsinghua.esco.base.vo.VRolesInfo;
+import com.tsinghua.esco.base.vo.VRoles_funsInfo;
+
+public interface IRolesDao {
+
+	List queryrelos(VRolesInfo role);
+
+	List queryfuns(Integer pid);
+
+	VRolesInfo saveroles(VRolesInfo roles);
+
+	void saverf(VRoles_funsInfo rf);
+
+	void delroles(Integer rid);
+
+	void delrf(Integer rid);
+
+	VRolesInfo toupdate(Integer rid);
+
+	List queryupdmenu(VRolesInfo role);
+
+	void saveupds(VRolesInfo role);
+
+	void updrolefun(VRoles_funsInfo rf);
+
+	List queryssqh();
+
+	void deletesena(Integer sid);
+
+	void insaccs(VAccsInfo accs);
+
+}

@@ -1,0 +1,72 @@
+package com.tsinghua.esco.xtgl.qxgl.dao;
+
+import java.util.List;
+
+import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.tsinghua.esco.base.vo.VAccsInfo;
+import com.tsinghua.esco.base.vo.VRolesInfo;
+import com.tsinghua.esco.base.vo.VRoles_funsInfo;
+import com.tsinghua.esco.xtgl.qxgl.mapper.RolesMapper;
+@Repository("redao")
+public class RolesDaoImp extends SqlSessionDaoSupport implements IRolesDao {
+    @Autowired
+	private RolesMapper mapper;
+
+	public List queryrelos(VRolesInfo role) {
+		return mapper.queryall(role);
+	}
+
+	public List queryfuns(Integer pid) {
+		return mapper.queryfuns(pid);
+	}
+
+    //新增角色表
+	public VRolesInfo saveroles(VRolesInfo roles) {
+		mapper.saveroles(roles);	
+		return roles;
+	}
+    //新增角色权限中间表
+	public void saverf(VRoles_funsInfo rf) {
+        mapper.saverf(rf);		
+	}
+    //删除角色权限中间表
+	public void delrf(Integer rid) {
+	   	mapper.delrofu(rid);
+	}
+    //删除角色表
+	public void delroles(Integer rid) {
+		 mapper.delroles(rid);
+	}
+   //查询一条角色信息
+	public VRolesInfo toupdate(Integer rid) {
+		return mapper.toone(rid);
+	}
+   //查询权限节点
+	public List queryupdmenu(VRolesInfo role) {
+		return mapper.queryrolefun(role);
+	}
+    //修改角色表
+	public void saveupds(VRolesInfo role) {
+		 mapper.upds(role);		
+	}
+    //修改角色权限中间表
+	public void updrolefun(VRoles_funsInfo rf) {
+		mapper.updrole_funs(rf);	
+	}
+    //查询所属区划
+	public List queryssqh() {
+		return mapper.queryqhs();
+	}
+
+	public void deletesena(Integer sid) {
+		mapper.delsena(sid);
+		
+	}
+     //新增用户
+	public void insaccs(VAccsInfo accs) {
+		mapper.insertacc(accs);
+	}
+}

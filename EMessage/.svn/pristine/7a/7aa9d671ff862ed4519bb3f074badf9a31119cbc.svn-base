@@ -1,0 +1,143 @@
+package com.tsinghua.esco.xtgl.qxgl.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+
+import com.tsinghua.esco.base.vo.VAccsInfo;
+import com.tsinghua.esco.base.vo.VRolesInfo;
+import com.tsinghua.esco.base.vo.VRoles_funsInfo;
+
+import com.tsinghua.esco.xtgl.qxgl.dao.IRolesDao;
+import com.tsinghua.esco.xtgl.qxgl.vo.TreeInfo;
+
+
+@Controller
+@RequestMapping("/qxgl")
+public class RolesHandel {
+	
+    @Autowired
+	private IRolesDao redao;
+	@RequestMapping("/queryjs")
+	@ResponseBody
+	public Object queryjs(VRolesInfo role){
+		List list=redao.queryrelos(role);
+	    role.setPage(null);
+		List list2=redao.queryrelos(role);
+		Map map=new HashMap();
+		map.put("total", list2.size());
+		map.put("rows",list);
+		return map;
+	}
+	@RequestMapping("/queryqx")
+	@ResponseBody
+	public Object queryqx(){
+		List list=redao.queryfuns(0);
+		loadTree(list);
+		return list;
+	}
+	private void loadTree(List<TreeInfo> list){
+		List children;
+		for(TreeInfo tr:list){
+			children = redao.queryfuns(tr.getId());
+			tr.setChildren(children);
+		}
+	}
+	
+	@RequestMapping("/delsena")
+	@ResponseBody
+	public Object delsena(Integer sid){
+		redao.deletesena(sid);
+		return "";
+	};
+	@RequestMapping("/queryqh")
+    @ResponseBody
+    public Object queryqh(){
+		List list=redao.queryssqh();
+		return list;
+	}
+	@RequestMapping("/savefus")
+	@ResponseBody
+	public Object savefus(String name,String des,String nx){
+		System.out.println(nx);
+		VRolesInfo roles=new VRolesInfo();
+		roles.setName(name);
+		roles.setDes(des);
+		//新增角色
+		roles=redao.saveroles(roles);
+		//Integer rid=roles.getRid();
+		String[] newnx=nx.split(",");
+		for (int i = 0; i < newnx.length; i++) {
+			VRoles_funsInfo rf=new VRoles_funsInfo();
+			rf.setFid(Integer.parseInt(newnx[i]));
+			rf.setRid(roles.getRid());
+			redao.saverf(rf);
+		}
+		return "";
+	}
+	@RequestMapping("/dodel")
+	@ResponseBody
+	public Object dodel(Integer rid){
+		redao.delroles(rid);
+		redao.delrf(rid);
+		return "";
+	}
+	@RequestMapping("/vup")
+	public String vup(VRolesInfo role,Map map){
+		role=redao.toupdate(role.getRid());
+		map.put("role", role);
+		return "/xtgl/xitongguanli/roleupdate";
+	}
+	@RequestMapping("/updatemenu")
+	@ResponseBody
+	public Object  updatemenu(VRolesInfo role){
+		role.setFid(0);
+		List list=redao.queryupdmenu(role);
+		loadupdmenu(list,role);
+		return list;
+	}
+	private void loadupdmenu(List<TreeInfo> list,VRolesInfo role){
+		 for(TreeInfo dt:list){
+			 //得到子节点
+			 role.setFid(dt.getId());
+			 List children=redao.queryupdmenu(role);
+			 if(children.size()>0){
+				 dt.setChildren(children);
+				 //递归加载整棵树形节点
+				 loadupdmenu(children,role);
+			 }
+		 }
+	} 
+	@RequestMapping("/saveupd")
+	public String saveupd(String name,String des,String qx,Integer rid){
+		try {
+			name=new String(name.getBytes("ISO-8859-1"),"utf-8");
+			des=new String(des.getBytes("ISO-8859-1"),"utf-8");
+			VRolesInfo role=new VRolesInfo();
+			role.setRid(rid);
+			role.setName(name);
+			role.setDes(des);
+			redao.saveupds(role);
+			
+			redao.delrf(rid);
+			String[] newnx=qx.split(",");
+			for (int i = 0; i < newnx.length; i++) {
+				VRoles_funsInfo rf=new VRoles_funsInfo();
+				rf.setFid(Integer.parseInt(newnx[i])); 
+				rf.setRid(rid);
+				redao.saverf(rf);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+				
+		return "/xtgl/xitongguanli/qxgl";
+	}
+	
+}

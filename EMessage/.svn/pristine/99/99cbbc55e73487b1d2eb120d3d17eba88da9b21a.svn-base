@@ -1,0 +1,42 @@
+package com.tsinghua.esco.base.vo;
+
+public class VEduFile {
+	private Integer fid;
+	private String fname;
+	private String fpath; 
+	private String remark;
+	private Integer fsize;
+	
+	public Integer getFsize() {
+		return fsize;
+	}
+	public void setFsize(Integer fsize) {
+		this.fsize = fsize;
+	}
+	public Integer getFid() {
+		return fid;
+	}
+	public void setFid(Integer fid) {
+		this.fid = fid;
+	}
+	public String getFname() {
+		return fname;
+	}
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+	public String getFpath() {
+		return fpath;
+	}
+	public void setFpath(String fpath) {
+		this.fpath = fpath;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	
+	
+}

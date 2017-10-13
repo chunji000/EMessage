@@ -1,0 +1,25 @@
+[
+	{
+		"id":1,
+		"text":"项目立项",
+		"iconCls":"icon-add",
+		"attributes":{"url":"dept.do?reqtype=tolist"}
+	},
+	{
+		"id":2,
+		"text":"跟踪管理",
+		"children":[{
+				"text":"进度上报",
+				"iconCls":"icon-redo",
+				"attributes":{"url":"dept.do?reqtype=tolist"}
+			},{
+				"text":"日常督察",
+				"iconCls":"icon-remove"
+			}]
+	},
+	{
+		"id":3,
+		"text":"项目验收",
+		"iconCls":"icon-ok" 
+	}
+]

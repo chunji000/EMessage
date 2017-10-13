@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+     "-//mybatis.org//DTD mapper 3.0//EN"
+     "http:mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+     <mapper namespace="com.tsinghua.esco.xtgl.salary.mapper.SalaryMapper">
+     
+        
+         <select id="queryAll" parameterType="com.tsinghua.esco.base.vo.VEduSalary" resultType="com.tsinghua.esco.base.vo.VEduSalary">
+	           select 
+	                 id                 as id             
+				    ,emp_id             as empId           
+				    ,emp_name           as empName         
+				    ,dept_name          as deptName        
+				    ,job_salary         as jobSalary        
+				    ,level_salary       as levelSalary      
+				    ,pre_salary         as preSalary        
+				    ,health_allowance   as healthAllowance  
+				    ,traffic_allowance  as trafficAllowance 
+				    ,house_allowance    as houseAllowance   
+				    ,property_allowance as propertyAllowance
+				    ,left_allowance     as leftAllowance    
+				    ,pre_cash           as preCash          
+				    ,other_allowance    as otherAllowance   
+				    ,intax_salary       as intaxSalary      
+				    ,total_salary       as totalSalary      
+				    ,yibao_tax          as yibaoTax         
+				    ,unemp_tax          as unempTax         
+				    ,house_fund_tax     as houseFundTax     
+				    ,law_tax            as lawTax           
+				    ,append_house_fund  as appendHouseFund  
+				    ,should_salary      as shouldSalary     
+				    ,person_tax         as personTax        
+				    ,actual_salary      as actualSalary      
+				    ,dept               as dept              
+				    ,dept_gongcheng     as deptGongcheng    
+				    ,dept_yingyong      as deptYingyong     
+				    ,dept_jidian        as deptJidian       
+				    ,dept_jingguan      as deptJingguan     
+				    ,dept_gonggong      as deptGonggong     
+				    ,dept_gongxiao2     as deptGongxiao2    
+				    ,dept_gongxiao1     as deptGongxiao1    
+				    ,dept_gongxiaobufa  as deptGongxiaobufa 
+				    ,dept_dianda        as deptDianda       
+				    ,dept_jiapei        as deptJiapei       
+				    ,dept_houqin        as deptHouqin       
+				    ,annual_bonus       as annualBonus      
+				    ,other_course       as otherCourse      
+				    ,continue_teach     as continueTeach    
+				    ,salary_month     	as salaryMonth    
+	           from edu_salary s 
+	      <where>
+			  <if test="empId!=null and empId!=''">
+			  		where  s.emp_id=#{empId}
+			  </if>
+			  <if test="salaryMonth!=null and salaryMonth!=''">
+			  		and  s.salary_month=#{salaryMonth}
+			  </if>
+			  <if test="empName!=null and empName!=''">
+			  		and  s.emp_name=#{empName}
+			  </if>
+	  	  </where>
+		  <if test="page!=null and page!=0">
+				limit #{startnum} ,#{rows}
+	  	  </if>
+        </select>
+     
+     	<insert id="saveAdd"  parameterType="com.tsinghua.esco.base.vo.VEduSalary">
+     		insert into edu_salary 
+			(	id                 
+				,emp_id             
+				,emp_name           
+				,dept_name          
+				,job_salary         
+				,level_salary       
+				,pre_salary         
+				,health_allowance   
+				,traffic_allowance  
+				,house_allowance    
+				,property_allowance 
+				,left_allowance     
+				,pre_cash           
+				,other_allowance    
+				,intax_salary       
+				,total_salary       
+				,yibao_tax          
+				,unemp_tax          
+				,house_fund_tax     
+				,law_tax            
+				,append_house_fund  
+				,should_salary      
+				,person_tax         
+				,actual_salary      
+				,dept               
+				,dept_gongcheng     
+				,dept_yingyong      
+				,dept_jidian        
+				,dept_jingguan      
+				,dept_gonggong      
+				,dept_gongxiao2     
+				,dept_gongxiao1     
+				,dept_gongxiaobufa  
+				,dept_dianda        
+				,dept_jiapei        
+				,dept_houqin        
+				,annual_bonus       
+				,other_course       
+				,continue_teach
+				,salary_month
+			) values
+				(#{id},             
+				#{empId},           
+				#{empName},         
+				#{deptName},        
+				#{jobSalary},        
+				#{levelSalary},      
+				#{preSalary},        
+				#{healthAllowance},  
+				#{trafficAllowance}, 
+				#{houseAllowance},   
+				#{propertyAllowance},
+				#{leftAllowance},    
+				#{preCash},          
+				#{otherAllowance},   
+				#{intaxSalary},      
+				#{totalSalary},      
+				#{yibaoTax},         
+				#{unempTax},         
+				#{houseFundTax},     
+				#{lawTax},           
+				#{appendHouseFund},  
+				#{shouldSalary},     
+				#{personTax},        
+				#{actualSalary},       
+				#{dept},               
+				#{deptGongcheng},     
+				#{deptYingyong},      
+				#{deptJidian},        
+				#{deptJingguan},      
+				#{deptGonggong},      
+				#{deptGongxiao2},     
+				#{deptGongxiao1},     
+				#{deptGongxiaobufa},  
+				#{deptDianda},        
+				#{deptJiapei},        
+				#{deptHouqin},        
+				#{annualBonus},       
+				#{otherCourse},       
+				#{continueTeach},       
+				#{salaryMonth} )
+        </insert>
+        
+         <update id="saveUpdate" parameterType="com.tsinghua.esco.base.vo.VEduSalary">
+	            update edu_salary 
+				set
+				         id                 = #{id},             
+					    ,emp_id             = #{empId},           
+					    ,emp_name           = #{empName},         
+					    ,dept_name          = #{deptName},        
+					    ,job_salary         = #{jobSalary},        
+					    ,level_salary       = #{levelSalary},      
+					    ,pre_salary         = #{preSalary},        
+					    ,health_allowance   = #{healthAllowance},  
+					    ,traffic_allowance  = #{trafficAllowance}, 
+					    ,house_allowance    = #{houseAllowance},   
+					    ,property_allowance = #{propertyAllowance},
+					    ,left_allowance     = #{leftAllowance},    
+					    ,pre_cash           = #{preCash},          
+					    ,other_allowance    = #{otherAllowance},   
+					    ,intax_salary       = #{intaxSalary},      
+					    ,total_salary       = #{totalSalary},      
+					    ,yibao_tax          = #{yibaoTax},         
+					    ,unemp_tax          = #{unempTax},         
+					    ,house_fund_tax     = #{houseFundTax},     
+					    ,law_tax            = #{lawTax},           
+					    ,append_house_fund  = #{appendHouseFund},  
+					    ,should_salary      = #{shouldSalary},     
+					    ,person_tax         = #{personTax},        
+					    ,actual_salary      = #{actualSalary},      
+					    ,dept               = #{dept},              
+					    ,dept_gongcheng     = #{deptGongcheng},    
+					    ,dept_yingyong      = #{deptYingyong},     
+					    ,dept_jidian        = #{deptJidian},       
+					    ,dept_jingguan      = #{deptJingguan},     
+					    ,dept_gonggong      = #{deptGonggong},     
+					    ,dept_gongxiao2     = #{deptGongxiao2},    
+					    ,dept_gongxiao1     = #{deptGongxiao1},    
+					    ,dept_gongxiaobufa  = #{deptGongxiaobufa}, 
+					    ,dept_dianda        = #{deptDianda},       
+					    ,dept_jiapei        = #{deptJiapei},       
+					    ,dept_houqin        = #{deptHouqin},       
+					    ,annual_bonus       = #{annualBonus},      
+					    ,other_course       = #{otherCourse},      
+					    ,continue_teach     = #{continueTeach}
+				where
+				emp_id =#{empId} 
+        </update>
+        
+         <delete id="dodelete" parameterType="int">
+            delete from edu_salary where emp_id=#{value}
+        </delete>
+     </mapper>
+

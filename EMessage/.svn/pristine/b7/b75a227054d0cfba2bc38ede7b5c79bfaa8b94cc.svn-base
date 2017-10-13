@@ -1,0 +1,40 @@
+package com.tsinghua.esco.xtgl.qxgl.mapper;
+
+import java.util.List;
+
+import com.tsinghua.esco.base.vo.VAccsInfo;
+import com.tsinghua.esco.base.vo.VRolesInfo;
+import com.tsinghua.esco.base.vo.VRoles_funsInfo;
+
+public interface RolesMapper {
+
+	List queryall(VRolesInfo role);
+
+	List queryfuns(Integer pid);
+
+
+	void saveroles(VRolesInfo roles);
+
+	void saverf(VRoles_funsInfo rf);
+
+	void delrofu(Integer rid);
+
+	void delroles(Integer rid);
+
+	VRolesInfo toone(Integer rid);
+
+	List queryrolefun(VRolesInfo role);
+
+	void upds(VRolesInfo role);
+
+	void updrole_funs(VRoles_funsInfo rf);
+
+	List queryqhs();
+
+	void delsena(Integer sid);
+
+	void insertacc(VAccsInfo accs);
+
+
+
+}

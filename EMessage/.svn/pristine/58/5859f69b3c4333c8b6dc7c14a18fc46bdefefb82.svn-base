@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+     "-//mybatis.org//DTD mapper 3.0//EN"
+     "http:mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+     <mapper namespace="com.tsinghua.esco.xtgl.bmgl.mapper.VDeptInfoMapper">
+        <select id="queryAllDept" parameterType="com.tsinghua.esco.base.vo.VEduOrgInfo" resultType="com.tsinghua.esco.base.vo.VEduOrgInfo">
+          select o.*,p.org_name pname from edu_org o ,edu_org p 
+			where o.parent_id = p.id
+           <if test="org_name!=null and org_name!=''">
+             and o.org_name like "%"#{org_name}"%"
+           </if>
+           <if test="parent_id!=null">
+		      and o.parent_id=#{parent_id}
+		  </if>
+		  <if test="page!=null and page!=0">
+				limit #{startnum} ,#{rows}
+		</if>
+        </select>
+        
+        <select id="queryDept" parameterType="int" resultType="com.tsinghua.esco.base.vo.DeptTree">
+          select id,org_name text from edu_org where parent_id=#{value} and is_use=0
+        </select>
+        
+        <select id="queryAllBase" parameterType="int" resultType="com.tsinghua.esco.base.vo.VBaseInfo">
+         select * from base where pbid=#{value}
+        </select>
+        
+        <select id="selecDept" parameterType="int"  resultType="com.tsinghua.esco.base.vo.VDeptInfo"> 
+           select a.*,b1.name tname,b2.name bname from ( select a1.*,a2.name pname from dept a1 left join dept a2 on a1.pdid= a2.did) a
+           ,base b1,base b2 
+           where a.tid=b1.bid and a.bid=b2.bid 
+             and a.did=#{value}
+            group by a.did
+        </select>
+        
+        <insert id="addDept"  parameterType="com.tsinghua.esco.base.vo.VEduOrgInfo">
+           insert into edu_org 
+			(parent_id, org_name, is_use)
+			values
+			(#{parent_id}, #{org_name}, #{is_use})
+        </insert>
+        
+        <delete id="deleteDept" parameterType="int">
+            delete from edu_org where id=#{value}
+        </delete>
+        
+        <select id="toupdate" parameterType="int" resultType="com.tsinghua.esco.base.vo.VEduOrgInfo">
+           select * from edu_org where id=#{value}
+        
+        </select>
+        
+        <select id="findAccs" parameterType="int" resultType="com.tsinghua.esco.base.vo.VAccsInfo">
+        	select count(*) num from accs where did=#{value}
+        </select>
+        
+        <update id="updateDept" parameterType="com.tsinghua.esco.base.vo.VEduOrgInfo">
+          update edu_org 
+			set
+			parent_id = #{parent_id} , 
+			org_name = #{org_name} , 
+			is_use = #{is_use} 
+			where
+			id = #{id}
+        </update>
+     
+     </mapper>
+

@@ -1,0 +1,39 @@
+package com.tsinghua.esco.xtgl.xxgl.dao;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.tsinghua.esco.base.vo.VEduMessageInfo;
+import com.tsinghua.esco.xtgl.xxgl.mapper.EduMessageMapper;
+
+@Repository("msgdao")
+public class MessageDaoImp implements IMessageDao{
+
+	@Autowired
+	private EduMessageMapper mapper;
+	
+	public List queryAll(VEduMessageInfo msg) {
+		return mapper.queryAll(msg);
+	}
+
+	public void saveAdd(VEduMessageInfo msg) {
+		mapper.saveAdd(msg);
+	}
+
+	public void saveUpdate(VEduMessageInfo msg) {
+		mapper.saveUpdate(msg);
+	}
+	
+	public void dodelete(int id){
+		mapper.dodelete(id);
+	}
+
+	public VEduMessageInfo toupdate(Integer id) {
+		return mapper.toupdate(id);
+	}
+	public VEduMessageInfo dopush(Integer id) {
+		return mapper.dopush(id);
+	}
+}

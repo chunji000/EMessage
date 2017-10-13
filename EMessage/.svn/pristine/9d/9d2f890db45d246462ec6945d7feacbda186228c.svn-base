@@ -1,0 +1,64 @@
+package com.tsinghua.esco.xtgl.bmgl.dao;
+
+import java.util.List;
+
+import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import com.tsinghua.esco.xtgl.bmgl.mapper.VDeptInfoMapper;
+import com.tsinghua.esco.base.vo.VAccsInfo;
+import com.tsinghua.esco.base.vo.VDeptInfo;
+import com.tsinghua.esco.base.vo.VEduOrgInfo;
+
+
+
+@Repository("deptdao")
+public class DeptDaoImp extends SqlSessionDaoSupport implements IDempDao {
+   
+	@Autowired
+	private VDeptInfoMapper mapper;
+	
+	
+	
+	public List queryAllDept(VEduOrgInfo dept){
+		return mapper.queryAllDept(dept);
+		
+	}
+	
+	public VDeptInfo selecDept(Integer did){
+		return mapper.selecDept(did);
+		
+	}
+	
+	public List queryDept(Integer pdid){
+		return mapper.queryDept(pdid);
+		
+	}
+	
+	public List queryAllBase(Integer id){
+		return mapper.queryAllBase(id);
+		
+	}
+	
+	public void addDept(VEduOrgInfo dept){
+		mapper.addDept(dept);
+		
+	}
+	
+	public void deleteDept(Integer did){
+		mapper.deleteDept(did);
+	}
+	
+	public VEduOrgInfo toupdate(Integer did){
+		return mapper.toupdate(did);
+	}
+	
+	public void updateDept(VEduOrgInfo dept){
+		mapper.updateDept(dept);
+	}
+
+	public VAccsInfo findAccs(Integer did) {
+		return mapper.findAccs(did);
+	}
+}
+

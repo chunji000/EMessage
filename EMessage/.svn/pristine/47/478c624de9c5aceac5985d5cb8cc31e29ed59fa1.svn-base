@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+       "-//mybatis.org//DTD mapper 3.0//EN"
+       "http://mybatis.org/dtd/mybatis-3.0-mapper.dtd">
+       
+       <mapper namespace="com.tsinghua.esco.xtgl.yhgl.mapper.VAccsMapper">
+           <select id="queryAllAccs" parameterType="com.tsinghua.esco.base.vo.VAccsInfo" resultType="com.tsinghua.esco.base.vo.VAccsInfo">
+             select a.*,d.name dname from accs a,dept d
+             where a.did=d.did 
+             <if test="username!=null and username!=''">
+             and a.username like "%"#{username}"%"
+             </if>
+             <if test="did!=null and did!=0">
+             and a.did=#{did}
+             </if>
+             
+             <if test="page!=null and page!=0">
+				limit #{startnum} ,#{rows}
+		    </if>
+           </select>
+           
+           <select id="queryAllDept" resultType="com.tsinghua.esco.base.vo.VDeptInfo">
+            select * from dept
+           </select>
+           
+           <select id="queryAllRoles" resultType="com.tsinghua.esco.base.vo.VRolesInfo">
+            select * from roles
+           </select>
+           
+           <insert id="addAccs" parameterType="com.tsinghua.esco.base.vo.VAccsInfo">
+              insert into accs(did,rid,username,password,sex,tel,stat,job,name,em,des )
+              values(#{did},#{rid},#{username},#{password},#{sex},#{tel},#{stat},#{job},#{name},#{em},#{des} )
+           
+           </insert>
+           
+           <select id="toupdate" parameterType="int" resultType="com.tsinghua.esco.base.vo.VAccsInfo">
+             select a.* ,d.name dname from accs a,dept d
+              where a.did=d.did and a.aid=#{value}
+           
+           </select>
+           
+           <update id="updateAccs"  parameterType="com.tsinghua.esco.base.vo.VAccsInfo">
+              update accs set
+              did=#{did},rid=#{rid},username=#{username},password=#{password},sex=#{sex},tel=#{tel},stat=#{stat},job=#{job},name=#{name},em=#{em},des=#{des}
+              where aid=#{aid}
+           </update>
+           
+           <delete id="deleteAccs" parameterType="int">
+             delete from accs where aid=#{value}
+           </delete>
+           
+            <select id="queryone" parameterType="string" resultType="com.tsinghua.esco.base.vo.VAccsInfo">
+              select * from accs where username =#{value}
+          </select>
+           
+       
+       </mapper>
+      

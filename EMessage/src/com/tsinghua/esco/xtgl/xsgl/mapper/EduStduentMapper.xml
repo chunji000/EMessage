@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+     "-//mybatis.org//DTD mapper 3.0//EN"
+     "http:mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+     <mapper namespace="com.tsinghua.esco.xtgl.xsgl.mapper.EduStduentMapper">
+     
+        
+         <select id="queryAll" parameterType="com.tsinghua.esco.base.vo.VEduStudentInfo" resultType="com.tsinghua.esco.base.vo.VEduStudentInfo">
+           select s.*,t.name tname,o.org_name oname from edu_student s,edu_teachers t,edu_org o 
+			where s.org_id = o.id
+			and s.teacher_id = t.id
+			
+			
+		  <if test="stu_no!=null and stu_no!=''">
+		  	and s.stu_no=#{stu_no}
+		  </if>
+		  <if test="name!=null and name!=''">
+		    and s.name  like "%"#{name}"%"
+		  </if>
+		  <if test="org_id!=null and org_id!=0">
+		  	and s.org_id = #{org_id}
+		  </if>
+		  <if test="degree!=null and degree!=''">
+		    and s.degree = #{degree}
+		  </if>
+		  <if test="phone_number!=null and phone_number!=''">
+		  and s.phone_number like  "%"#{phone_number}"%"
+		  </if>
+		  <if test="teacher_id!=null and teacher_id!=0">
+		  and s.teacher_id= #{teacher_id}
+		  </if>
+		  
+		  
+		  <if test="page!=null and page!=0">
+				limit #{startnum} ,#{rows}
+	  	  </if>
+        </select>
+        <select id="toupdate" parameterType="int" resultType="com.tsinghua.esco.base.vo.VEduStudentInfo">
+           select s.*,t.name tname,o.org_name oname from edu_student s,edu_teachers t,edu_org o 
+			where s.org_id = o.id
+			and s.teacher_id = t.id
+			and  s.id= #{value}
+        </select>
+     
+     	<insert id="saveAdd"  parameterType="com.tsinghua.esco.base.vo.VEduStudentInfo">
+     	
+	          insert into edu_student 
+			(stu_no, name, password, sex, birthday, degree, phone_number, email, org_id, teacher_id, update_date, rid)
+			values
+			(#{stu_no}, #{name}, #{password}, 
+			#{sex}, #{birthday}, #{degree}, #{phone_number}, 
+			#{email}, #{org_id}, #{teacher_id}, #{update_date}, #{rid})
+        </insert>
+        
+         <update id="saveUpdate" parameterType="com.tsinghua.esco.base.vo.VEduStudentInfo">
+	            update edu_student 
+				set
+				id =#{id},
+				stu_no =#{stu_no},
+				name =#{name},
+				password =#{password},
+				sex =#{sex},
+				birthday =#{birthday},
+				degree =#{degree},
+				phone_number =#{phone_number},
+				email =#{email},
+				org_id =#{org_id},
+				teacher_id =#{teacher_id}
+				where
+				id =#{id} 
+        </update>
+        
+         <delete id="dodelete" parameterType="int">
+            delete from edu_student where id=#{value}
+        </delete>
+     </mapper>
+

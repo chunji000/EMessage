@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<mapper namespace="com.tsinghua.esco.xtgl.qxgl.mapper.RolesMapper">
+  <select id="queryall" parameterType="com.tsinghua.esco.base.vo.VRolesInfo" resultType="com.tsinghua.esco.base.vo.VRolesInfo">
+     select * from roles  where 1=1
+     <if test="name!=null and name!=''">
+			 and name like "%"#{name}"%"
+	 </if>
+	 <if test="page!=null and page!=0">
+			limit #{startnum},#{rows}
+	 </if>
+  </select>
+  <select id="queryfuns" parameterType="int" resultType="com.tsinghua.esco.xtgl.qxgl.vo.TreeInfo">
+        select fid id,des text,uri attributes
+	  		,icon iconCls
+ 			from funs
+ 			where pfid=#{value}
+  </select>
+  <insert id="saveroles" useGeneratedKeys="true" keyProperty="rid"  parameterType="com.tsinghua.esco.base.vo.VRolesInfo" >
+      insert into roles(name,des) values(#{name},#{des})
+  </insert>
+  <insert id="saverf" parameterType="com.tsinghua.esco.base.vo.VRoles_funsInfo">
+      insert into roles_funs values(#{rid},#{fid});
+  </insert>
+  <delete id="delrofu" parameterType="int">
+     delete from roles_funs where rid=#{value}
+  </delete>
+  <delete id="delroles" parameterType="int">
+      delete from roles where rid=#{value}
+  </delete>
+  <select id="toone" parameterType="int" resultType="com.tsinghua.esco.base.vo.VRolesInfo">
+      select * from roles where rid=#{value}
+  </select>
+  <select id="queryrolefun" parameterType="com.tsinghua.esco.base.vo.VRolesInfo" resultType="com.tsinghua.esco.xtgl.qxgl.vo.TreeInfo">
+       select f.fid id,f.des text,f.icon iconCls,
+			(case when r.rid>0 then true else false end ) checked
+			from funs f left join (select * from roles_funs  where rid=#{rid}) r on 
+			f.fid = r.fid 
+			where f.pfid=#{fid}
+  </select>
+  <update id="upds" parameterType="com.tsinghua.esco.base.vo.VRolesInfo">
+       update roles set name=#{name},des=#{des} where rid=#{rid}
+  </update>
+  <update id="updrole_funs" parameterType="com.tsinghua.esco.base.vo.VRoles_funsInfo">
+      update roles_funs set fid=#{fid} where rid=#{rid}
+  </update>
+  <select id="queryqhs" resultType="com.tsinghua.esco.base.vo.VBaseInfo">
+      select * from base where pbid=3
+  </select>
+ 
+  <delete id="delsena" parameterType="int">
+    delete from sena where sid=#{value}
+  </delete>
+  <insert id="insertacc" parameterType="com.tsinghua.esco.base.vo.VAccsInfo">
+       insert into accs(did,rid,username,password,sex,tel,stat,job,name,em,des)
+       values(76,88,#{username},#{password},#{sex},#{tel},#{stat},#{job},#{name},#{em},#{des})
+  </insert>
+</mapper>

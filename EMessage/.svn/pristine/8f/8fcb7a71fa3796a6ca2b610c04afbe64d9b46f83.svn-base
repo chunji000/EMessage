@@ -1,0 +1,28 @@
+[
+	{
+		"id":5,
+		"text":"系统管理",
+		"iconCls":"icon-system",
+		"children":[{
+				"text":"学生管理",
+				"iconCls":"icon-group-node",
+				"attributes":{"url":"/jsp/xtgl/xsgl/allstu.jsp"}
+			},{
+				"text":"组织管理",
+				"iconCls":"icon-contract",
+				"attributes":{"url":"chenchao/bmgl/alldept.jsp"}
+			},{
+				"text":"教师管理",
+				"iconCls":"icon-user",
+				"attributes":{"url":"chenchao/yhgl/allaccs.jsp"}
+			},{
+				"text":"角色管理",
+				"iconCls":"icon-award_star_silver",
+				"attributes":{"url":"/zhaopeng/xitongguanli/qxgl.jsp"}
+			},{
+				"text":"消息管理",
+				"iconCls":"icon-f_7",
+				"attributes":{"url":"jsp/xtgl/xxgl/allmessage.jsp"}
+			}]
+	}
+]

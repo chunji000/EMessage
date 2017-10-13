@@ -1,0 +1,32 @@
+package com.tsinghua.esco.xtgl.bmgl.mapper;
+
+import java.util.List;
+
+import com.tsinghua.esco.base.vo.VAccsInfo;
+import com.tsinghua.esco.base.vo.VDeptInfo;
+import com.tsinghua.esco.base.vo.VEduOrgInfo;
+
+
+
+public interface VDeptInfoMapper {
+	
+	
+	public List queryAllDept(VEduOrgInfo dept);
+	public List queryDept(Integer pdid);
+	
+	public VDeptInfo selecDept(Integer did);
+
+	public void addDept(VEduOrgInfo dept);
+	
+	public List queryAllBase(Integer id);
+
+	public void deleteDept(Integer did);
+
+	public VEduOrgInfo toupdate(Integer did);
+
+	public void updateDept(VEduOrgInfo dept);
+	public VAccsInfo findAccs(Integer did);
+
+}
+
+

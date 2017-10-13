@@ -1,0 +1,19 @@
+package com.tsinghua.esco.xtgl.xxgl.dao;
+
+import java.util.List;
+
+import com.tsinghua.esco.base.vo.VEduMessageInfo;
+
+public interface IMessageDao {
+
+	public List queryAll(VEduMessageInfo stu);
+
+	public void saveAdd(VEduMessageInfo stu);
+
+	public void saveUpdate(VEduMessageInfo stu);
+	
+	public void dodelete(int id);
+
+	public VEduMessageInfo toupdate(Integer id);
+
+}
